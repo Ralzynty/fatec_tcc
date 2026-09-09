@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -7,15 +8,22 @@ export default function Home() {
   const [cargoSelecionado, setCargoSelecionado] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarErro, setMostrarErro] = useState(false);
+  const [verificando, setVerificando] = useState(false);
+
   const acessarSistema = () => {
     if (email === "" || senha === "" || cargoSelecionado === null) {
       setMostrarErro(true);
-    } else {
-      setMostrarErro(false);
-      router.push("/sistema");
+      return;
     }
+
+    setMostrarErro(false);
+    setVerificando(true);
+
+    setTimeout(() => {
+      router.push("/pagina_inicial");
+    }, 1200);
   };
-  const [mostrarErro, setMostrarErro] = useState(false);
 
   return (
     <main className="pagina">
@@ -82,7 +90,7 @@ export default function Home() {
         </label>
 
         <input
-          type="text"
+          type="email"
           placeholder="nome@instituicao.sp.gov.br"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -108,15 +116,16 @@ export default function Home() {
 
         <button
           className="acessar"
+          disabled={verificando}
           onClick={acessarSistema}
         >
-          ACESSAR SISTEMA
+          {verificando ? "VERIFICANDO..." : "ACESSAR SISTEMA"}
         </button>
 
 
         <p className="esqueci">
           Esqueceu a senha?
-          <a href="#"> Clique aqui</a>
+          <a href="/esqueci_senha"> Clique aqui</a>
         </p>
 
       </section>
