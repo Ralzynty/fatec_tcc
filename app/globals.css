@@ -216,12 +216,10 @@ footer {
   padding: 0 30px;
 }
 
-/* TELA DE RECUPERAÇÃO DE SENHA */
-
 .cabecalho {
   justify-content: space-between;
 }
- 
+
 .voltarLogin {
   margin-left: auto;
   background: none;
@@ -230,7 +228,7 @@ footer {
   font-size: 13px;
   cursor: pointer;
 }
- 
+
 .voltarLogin:hover {
   color: #d90000;
 }
@@ -249,57 +247,57 @@ footer {
   align-items: flex-start;
   margin-bottom: 30px;
 }
- 
+
 .stepperItem {
   display: flex;
   align-items: center;
   flex: 1;
 }
- 
+
 .stepperItem:last-child {
   flex: 0;
 }
- 
+
 .stepperGrupo {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
- 
+
 .stepCirculo {
   width: 34px;
   height: 34px;
- 
+
   border: 2px solid #ddd;
   color: #bbb;
- 
+
   display: flex;
   align-items: center;
   justify-content: center;
- 
+
   font-size: 13px;
   font-weight: bold;
 }
- 
+
 .stepCirculo.atual {
   border-color: #d90000;
   color: #d90000;
 }
- 
+
 .stepCirculo.concluido {
   background: #d90000;
   border-color: #d90000;
   color: white;
 }
- 
+
 .stepLabel {
   font-size: 10px;
   letter-spacing: 1px;
   color: #999;
   white-space: nowrap;
 }
- 
+
 .stepLinha {
   flex: 1;
   height: 1px;
@@ -307,7 +305,7 @@ footer {
   margin: 0 8px;
   margin-bottom: 20px;
 }
- 
+
 .stepLinha.concluido {
   background: #d90000;
 }
@@ -319,25 +317,25 @@ footer {
   padding: 12px;
   justify-content: center;
 }
- 
+
 .codigoInput {
   width: 40px;
   height: 40px;
- 
+
   border: none;
   border-bottom: 2px solid #ddd;
   background: transparent;
- 
+
   text-align: center;
   font-size: 20px;
   color: #333;
 }
- 
+
 .codigoInput:focus {
   outline: none;
   border-color: #d90000;
 }
- 
+
 .reenviar {
   text-align: center;
   font-size: 11px;
@@ -347,7 +345,7 @@ footer {
   margin-top: 16px;
   cursor: pointer;
 }
- 
+
 .reenviar:hover {
   color: #d90000;
 }
@@ -360,7 +358,7 @@ footer {
 .inputErro {
   border-color: #d90000 !important;
 }
- 
+
 .erroTexto {
   color: #d90000;
   font-size: 12px;
@@ -372,38 +370,624 @@ footer {
   text-align: center;
   padding: 40px 0;
 }
- 
+
 .iconeSucesso {
   width: 56px;
   height: 56px;
- 
+
   margin: 0 auto 16px;
- 
+
   border: 2px solid #b7f0cf;
   background: #eafff2;
   color: #17a34a;
- 
+
   display: flex;
   align-items: center;
   justify-content: center;
- 
+
   font-size: 24px;
 }
- 
+
 .concluidoLabel {
   color: #d90000;
   font-size: 11px;
   font-weight: bold;
   letter-spacing: 2px;
 }
- 
+
 .sucesso h2 {
   font-size: 28px;
   margin: 8px 0 12px;
 }
- 
+
 .sucesso .acessar {
   width: auto;
   padding: 0 32px;
   margin-top: 20px;
+}
+
+.rhPagina {
+  min-height: 100vh;
+  background: #f7f7f7;
+  color: #111;
+  font-family: Arial, sans-serif;
+}
+
+.rhCabecalho {
+  height: 60px;
+  background: #fff;
+  border-top: 4px solid #d90000;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.rhMarca,
+.rhUsuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rhLogo {
+  width: 30px;
+  height: 30px;
+  background: #d90000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold
+}
+
+.rhMarca b {
+  color: #d90000;
+  font-size: 13px;
+  letter-spacing: 1.5px
+}
+
+.rhMarca span {
+  color: #aaa
+}
+
+.rhUsuario {
+  gap: 10px;
+  font-size: 12px
+}
+
+.rhUsuario small {
+  color: #aaa;
+  margin-left: -4px
+}
+
+.rhUsuario a {
+  border: 1px solid #ddd;
+  padding: 8px 13px;
+  color: #777;
+  text-decoration: none;
+  margin-left: 10px
+}
+
+.rhNav {
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 34px;
+  padding: 0 30px;
+  font-size: 13px;
+  color: #777
+}
+
+.rhNav a {
+  color: #777;
+  text-decoration: none;
+  padding: 17px 0
+}
+
+.rhNav a.ativo {
+  color: #d90000;
+  border-bottom: 2px solid #d90000;
+  font-weight: bold
+}
+
+.folhas {
+  border: 1px solid #f1cccc;
+  background: #fff5f5;
+  color: #d90000;
+  padding: 8px 12px;
+  font-weight: bold
+}
+
+.rhConteudo {
+  padding: 0 30px 50px
+}
+
+.breadcrumb {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  color: #aaa;
+  font-size: 11px
+}
+
+.breadcrumb b {
+  color: #d90000
+}
+
+.rhConteudo h1 {
+  font-size: 30px;
+  margin: 20px 0
+}
+
+.cardsRh {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px
+}
+
+.cardsRh>div {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px 17px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between
+}
+
+.cardsRh span {
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 1px
+}
+
+.cardsRh strong {
+  font-size: 28px;
+  font-weight: 500
+}
+
+.cardsRh .alerta {
+  border: 2px solid #d90000
+}
+
+.cardsRh .alerta strong {
+  color: #d90000
+}
+
+.rhPainelGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 25px
+}
+
+.rhBox {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 22px
+}
+
+.rhBox h2 {
+  font-size: 16px;
+  margin: 0 0 20px
+}
+
+.rhBox h2 small {
+  float: right;
+  color: #d90000;
+  font-size: 11px
+}
+
+.rhBox p {
+  font-size: 12px;
+  color: #666;
+  margin: 14px 0 5px
+}
+
+.rhBox p b {
+  float: right;
+  color: #111
+}
+
+.barra {
+  height: 8px;
+  background: #eee
+}
+
+.barra i {
+  display: block;
+  height: 100%;
+  background: #09bd7a
+}
+
+.rhBox em {
+  float: right;
+  border: 1px solid #f0cccc;
+  background: #fff5f5;
+  color: #d90000;
+  padding: 3px 8px;
+  font-style: normal;
+  font-size: 10px
+}
+
+.rhBox em.fechado {
+  border-color: #b8efd8;
+  background: #edfff7;
+  color: #008b63
+}
+
+.rhBox>a {
+  display: block;
+  border: 1px solid #eee;
+  padding: 14px;
+  color: #666;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 8px
+}
+
+.rhBox>a span {
+  float: right
+}
+
+.tituloLinha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 25px
+}
+
+.tituloLinha h1 {
+  margin: 0
+}
+
+.tituloLinha p {
+  margin: 4px 0;
+  color: #999;
+  font-size: 13px
+}
+
+.tituloLinha>button {
+  background: #d90000;
+  color: #fff;
+  border: 0;
+  padding: 14px 22px;
+  font-weight: bold;
+  cursor: pointer
+}
+
+.cadastroBox {
+  background: #fff;
+  border: 2px solid #d90000;
+  padding: 25px;
+  margin-bottom: 20px
+}
+
+.cadastroBox h2 {
+  font-size: 16px;
+  margin: 0 0 20px
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px 12px
+}
+
+.campo span {
+  display: block;
+  color: #888;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 7px
+}
+
+.campo input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ddd;
+  padding: 0 12px;
+  background: #fff
+}
+
+.botoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px
+}
+
+.botoes button,
+.confirmar button,
+.fecharModal {
+  height: 40px;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 0 20px;
+  color: #888;
+  font-weight: bold;
+  cursor: pointer
+}
+
+.botoes .salvar,
+.confirmar button:first-child {
+  background: #d90000;
+  color: #fff;
+  border-color: #d90000
+}
+
+.busca {
+  margin: 18px 0
+}
+
+.busca input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #ddd;
+  padding: 0 15px;
+  background: #fff
+}
+
+.tabelaWrap {
+  background: #fff;
+  border: 1px solid #ddd;
+  overflow: auto
+}
+
+.tabelaWrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px
+}
+
+.tabelaWrap th {
+  height: 40px;
+  text-align: left;
+  color: #999;
+  font-size: 10px;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #ddd;
+  padding: 0 15px
+}
+
+.tabelaWrap td {
+  height: 54px;
+  border-bottom: 1px solid #eee;
+  padding: 0 15px;
+  color: #666
+}
+
+.nomeServidor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #111
+}
+
+.nomeServidor span,
+.perfil>span {
+  width: 28px;
+  height: 28px;
+  background: #fde8e8;
+  color: #d90000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold
+}
+
+.acoes {
+  display: flex;
+  gap: 7px
+}
+
+.acoes button {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #aaa;
+  padding: 6px 9px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer
+}
+
+.statusAtivo {
+  color: #008b63;
+  background: #edfff7;
+  border: 1px solid #a9ecd0;
+  padding: 4px 8px;
+  font-size: 10px
+}
+
+.erroRh {
+  background: #ffe5e5;
+  color: #d90000;
+  padding: 11px;
+  margin-bottom: 15px;
+  font-size: 12px
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20
+}
+
+.modal {
+  background: #fff;
+  width: 480px;
+  max-width: 90vw;
+  padding: 26px;
+  border: 1px solid #ddd
+}
+
+.rotulo {
+  color: #d90000;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-weight: bold
+}
+
+.modal h2 {
+  font-size: 20px;
+  margin: 10px 0 18px
+}
+
+.perfil {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0 20px
+}
+
+.perfil h2 {
+  margin: 0;
+  font-size: 19px
+}
+
+.perfil p {
+  margin: 3px 0;
+  color: #999;
+  font-size: 11px
+}
+
+.detalhesLista {
+  border: 1px solid #eee
+}
+
+.detalhesLista>div {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  font-size: 11px
+}
+
+.detalhesLista span {
+  color: #999;
+  letter-spacing: 1px
+}
+
+.detalhesLista strong {
+  font-size: 12px
+}
+
+.fecharModal {
+  width: 100%;
+  margin-top: 15px
+}
+
+.modalForm {
+  grid-template-columns: 1fr 1fr
+}
+
+.modalForm .botoes {
+  grid-column: 1/-1
+}
+
+.confirmar {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px
+}
+
+.confirmar button {
+  flex: 1;
+  height: 54px
+}
+
+.confirmar button:first-child {
+  font-size: 11px
+}
+
+.modal>p {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5
+}
+
+@media(max-width:900px) {
+  .rhNav {
+    gap: 12px;
+    overflow: auto
+  }
+
+  .cardsRh,
+  .rhPainelGrid {
+    grid-template-columns: 1fr 1fr
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr 1fr
+  }
+}
+
+@media(max-width:600px) {
+
+  .cardsRh,
+  .rhPainelGrid,
+  .formGrid,
+  .modalForm {
+    grid-template-columns: 1fr
+  }
+
+  .rhMarca b,
+  .rhNav span {
+    display: none
+  }
+
+  .rhConteudo {
+    padding: 0 15px
+  }
+
+  .rhCabecalho {
+    padding: 0 15px
+  }
+}
+
+.statusItem {
+  margin-bottom: 16px;
+}
+
+.statusItem p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 6px;
+}
+
+.statusItem p span {
+  color: #666;
+}
+
+.statusItem p b {
+  color: #111;
+}
+
+.painelVazio {
+  border: 1px dashed #ddd;
+  padding: 25px 18px;
+  text-align: center;
+}
+
+.painelVazio strong {
+  display: block;
+  color: #555;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.painelVazio p {
+  color: #999;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
 }

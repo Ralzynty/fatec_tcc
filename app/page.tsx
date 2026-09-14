@@ -11,7 +11,7 @@ export default function Home() {
   const [mostrarErro, setMostrarErro] = useState(false);
   const [verificando, setVerificando] = useState(false);
 
-  const acessarSistema = () => {
+  const acessarSistema = async () => {
     if (email === "" || senha === "" || cargoSelecionado === null) {
       setMostrarErro(true);
       return;
@@ -20,9 +20,28 @@ export default function Home() {
     setMostrarErro(false);
     setVerificando(true);
 
-    setTimeout(() => {
-      router.push("/pagina_inicial");
-    }, 1200);
+    try {
+      const resposta = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha, cargo: cargoSelecionado })
+      });
+
+      const resultado = await resposta.json();
+
+      if (!resposta.ok) {
+        setMostrarErro(true);
+        setVerificando(false);
+        return;
+      }
+
+      if (resultado.cargo === "Professor") router.push("/pagina_professor");
+      if (resultado.cargo === "Gestor") router.push("/pagina_gestao");
+      if (resultado.cargo === "RH") router.push("/pagina_rh");
+    } catch {
+      setMostrarErro(true);
+      setVerificando(false);
+    }
   };
 
   return (
@@ -74,8 +93,8 @@ export default function Home() {
           </button>
 
           <button
-            className={cargoSelecionado === "Recursos Humanos" ? "cargo selecionado" : "cargo"}
-            onClick={() => setCargoSelecionado("Recursos Humanos")}
+            className={cargoSelecionado === "RH" ? "cargo selecionado" : "cargo"}
+            onClick={() => setCargoSelecionado("RH")}
           >
             👥
             <strong>Recursos Humanos</strong>
@@ -110,7 +129,7 @@ export default function Home() {
 
         {mostrarErro && (
           <div className="erro">
-            ⚠ Preencha matrícula e senha.
+            ⚠ Preencha cargo, e-mail e senha.
           </div>
         )}
 
