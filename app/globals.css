@@ -991,3 +991,178 @@ footer {
   line-height: 1.5;
   margin: 0;
 }
+
+.regrasTela {
+  max-width: 100%;
+}
+
+.regrasTitulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+.regrasTitulo h1 {
+  margin-bottom: 4px;
+}
+
+.regrasTitulo p {
+  margin: 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.sucessoRegra {
+  border-left: 4px solid #12b886;
+  background: #f1fff9;
+  color: #079669;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.regrasBox {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.filtrosRegras {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
+  color: #999;
+  font-size: 12px;
+}
+
+.regrasCabecalho {
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 90px 1fr 220px 230px;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
+  color: #888;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.regraLinha {
+  min-height: 57px;
+  display: grid;
+  grid-template-columns: 90px 1fr 220px 230px;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.regraLinha:last-child {
+  border-bottom: 0;
+}
+
+.regraIcone {
+  color: #777;
+  font-size: 17px;
+}
+
+.valorRegra {
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.valorRegra input {
+  width: 160px;
+  height: 32px;
+  border: 2px solid #e00000;
+  padding: 0 12px;
+  font-family: monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+.regraAcao {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+
+.editavelSim,
+.editavelFixo {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.editavelSim {
+  border: 1px solid #a6ead0;
+  background: #f0fff9;
+  color: #079669;
+}
+
+.editavelFixo {
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  color: #aaa;
+}
+
+.editarRegra {
+  width: 62px;
+  height: 28px;
+  background: #fff;
+  border: 1px solid #ff9999;
+  color: #e00000;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.editarRegra:hover {
+  background: #fff5f5;
+}
+
+.botoesRegra {
+  display: flex;
+  gap: 8px;
+}
+
+.salvarRegra,
+.cancelarRegra {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.salvarRegra {
+  background: #fff;
+  border: 1px solid #45d5aa;
+  color: #079669;
+}
+
+.cancelarRegra {
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #aaa;
+}
+
+.regraCarregando {
+  padding: 35px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.avisoRegras {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border: 1px solid #f1d36a;
+  background: #fffdf0;
+  color: #d99a00;
+  font-size: 12px;
+}

@@ -95,7 +95,10 @@ export default function SistemaRH() {
           Funcionários
         </Link>
 
-        <span>Regras de Ponto</span>
+        <Link href="/pagina_rh/regras_ponto">
+          Regras de Ponto
+        </Link>
+
         <span>Fechamento Mensal</span>
         <span>Relatórios</span>
         <span>Gerar PDF</span>
