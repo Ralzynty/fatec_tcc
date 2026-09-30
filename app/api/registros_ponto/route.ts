@@ -1,6 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
+function obterDiaSemana(data: Date) {
+  const dia = data.getDay();
+
+  const dias: Record<number, string> = {
+    0: "Domingo",
+    1: "Segunda",
+    2: "Terça",
+    3: "Quarta",
+    4: "Quinta",
+    5: "Sexta",
+    6: "Sábado",
+  };
+
+  return dias[dia];
+}
+
+function calcularAtraso(horarioReal: string, horarioPrevisto: string) {
+  const [horaReal, minutoReal] = horarioReal.split(":").map(Number);
+  const [horaPrevista, minutoPrevisto] = horarioPrevisto
+    .split(":")
+    .map(Number);
+
+  const minutosReal = horaReal * 60 + minutoReal;
+  const minutosPrevistos = horaPrevista * 60 + minutoPrevisto;
+
+  return Math.max(0, minutosReal - minutosPrevistos);
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -15,6 +43,8 @@ export async function GET(request: NextRequest) {
         DATE_FORMAT(rp.data, '%Y-%m-%d') AS data,
         TIME_FORMAT(rp.entrada, '%H:%i') AS entrada,
         TIME_FORMAT(rp.saida, '%H:%i') AS saida,
+        TIME_FORMAT(rp.horario_previsto, '%H:%i') AS horario_previsto,
+        rp.atraso_minutos,
         rp.status
       FROM registros_ponto rp
       INNER JOIN servidores s ON s.id = rp.servidor_id
@@ -80,19 +110,71 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      const [gradeRows] = await db.query(
+        `
+        SELECT
+          hora_inicio
+        FROM grades_aulas
+        WHERE servidor_id = ?
+          AND dia_semana = ?
+          AND status = 'Ativo'
+        ORDER BY hora_inicio
+        LIMIT 1
+        `,
+        [servidor_id, obterDiaSemana(new Date())]
+      );
+
+      const grade = (gradeRows as any[])[0];
+
+      const horarioPrevisto = grade?.hora_inicio
+        ? String(grade.hora_inicio).substring(0, 8)
+        : null;
+
+      const horarioAtual = new Date()
+        .toTimeString()
+        .slice(0, 8);
+
+      const atraso = horarioPrevisto
+        ? calcularAtraso(horarioAtual, horarioPrevisto)
+        : 0;
+
+      const status = horarioPrevisto
+        ? atraso > 0
+          ? "Atrasado"
+          : "Regular"
+        : "Sem grade";
+
       const [resultado] = await db.query(
         `
         INSERT INTO registros_ponto
-          (servidor_id, data, entrada, status)
+          (
+            servidor_id,
+            data,
+            entrada,
+            horario_previsto,
+            atraso_minutos,
+            status
+          )
         VALUES
-          (?, CURDATE(), CURTIME(), 'Em andamento')
+          (?, CURDATE(), CURTIME(), ?, ?, ?)
         `,
-        [servidor_id]
+        [
+          servidor_id,
+          horarioPrevisto,
+          atraso,
+          status,
+        ]
       );
 
       return NextResponse.json({
-        mensagem: "Entrada registrada com sucesso.",
+        mensagem:
+          atraso > 0
+            ? `Entrada registrada com ${atraso} minuto(s) de atraso.`
+            : "Entrada registrada com sucesso.",
         id: (resultado as any).insertId,
+        horario_previsto: horarioPrevisto,
+        atraso_minutos: atraso,
+        status,
       });
     }
 
@@ -115,8 +197,7 @@ export async function POST(request: NextRequest) {
         `
         UPDATE registros_ponto
         SET
-          saida = CURTIME(),
-          status = 'Concluído'
+          saida = CURTIME()
         WHERE id = ?
         `,
         [registro.id]

@@ -1685,3 +1685,31 @@ footer {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.atrasoPonto {
+  display: block;
+  margin-top: 4px;
+  color: #d60000;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.statusAtrasado {
+  color: #d60000;
+  border-color: #ffcaca;
+  background: #fff5f5;
+}
+
+.statusAtrasado i {
+  background: #d60000;
+}
+
+.statusSemgrade {
+  color: #999;
+  border-color: #ddd;
+  background: #f5f5f5;
+}
+
+.statusSemgrade i {
+  background: #aaa;
+}

@@ -18,6 +18,8 @@ type Registro = {
   data: string;
   entrada: string | null;
   saida: string | null;
+  horario_previsto: string | null;
+  atraso_minutos: number;
   status: string;
 };
 
@@ -108,45 +110,53 @@ export default function PaginaProfessor() {
   }
 
   async function registrarPonto(acao: "entrada" | "saida") {
-  setRegistrando(true);
-  setMensagem("");
+    setRegistrando(true);
+    setMensagem("");
 
-  try {
-    const resposta = await fetch("/api/registros_ponto", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        servidor_id: 1,
-        acao: acao,
-      }),
-    });
+    try {
+      const resposta = await fetch("/api/registros_ponto", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          servidor_id: 1,
+          acao: acao,
+        }),
+      });
 
-    const dados = await resposta.json();
+      const dados = await resposta.json();
 
-    if (!resposta.ok) {
-      setMensagem(dados.erro || "Erro ao registrar ponto.");
-      return;
+      if (!resposta.ok) {
+        setMensagem(dados.erro || "Erro ao registrar ponto.");
+        return;
+      }
+
+      setMensagem(dados.mensagem);
+
+      const registrosResposta = await fetch(
+        "/api/registros_ponto?servidor_id=1"
+      );
+
+      const registrosDados = await registrosResposta.json();
+
+      setRegistros(registrosDados);
+    } catch (erro) {
+      setMensagem("Erro ao registrar ponto.");
+    } finally {
+      setRegistrando(false);
     }
-
-    setMensagem(dados.mensagem);
-
-    const registrosResposta = await fetch(
-      "/api/registros_ponto?servidor_id=1"
-    );
-
-    const registrosDados = await registrosResposta.json();
-
-    setRegistros(registrosDados);
-  } catch (erro) {
-    setMensagem("Erro ao registrar ponto.");
-  } finally {
-    setRegistrando(false);
   }
-}
 
   function statusRegistro(registro: Registro) {
+    if (registro.status === "Atrasado") {
+      return "Atrasado";
+    }
+
+    if (registro.status === "Sem grade") {
+      return "Sem grade";
+    }
+
     if (registro.entrada && registro.saida) {
       return "Regular";
     }
@@ -322,10 +332,10 @@ export default function PaginaProfessor() {
         <section className="tabelaPonto">
           <div className="tabelaCabecalho">
             <span>DATA</span>
+            <span>PREVISTO</span>
             <span>ENTRADA</span>
             <span>SAÍDA</span>
             <span>TOTAL</span>
-            <span>LOCALIZAÇÃO</span>
             <span>STATUS</span>
           </div>
 
@@ -340,9 +350,8 @@ export default function PaginaProfessor() {
 
               return (
                 <div
-                  className={`tabelaLinha ${
-                    ehHoje ? "linhaHoje" : ""
-                  } ${status === "Ausência" ? "linhaAusencia" : ""}`}
+                  className={`tabelaLinha ${ehHoje ? "linhaHoje" : ""
+                    } ${status === "Ausência" ? "linhaAusencia" : ""}`}
                   key={registro.id}
                 >
                   <div className="celulaData">
@@ -351,7 +360,18 @@ export default function PaginaProfessor() {
                     {ehHoje && <small>HOJE</small>}
                   </div>
 
-                  <div>{registro.entrada || "—"}</div>
+                  <div>
+                    {registro.horario_previsto || "—"}
+                  </div>
+
+                  <div>
+                    {registro.entrada || "—"}
+                    {registro.atraso_minutos > 0 && (
+                      <small className="atrasoPonto">
+                        +{registro.atraso_minutos} min
+                      </small>
+                    )}
+                  </div>
 
                   <div>{registro.saida || "—"}</div>
 
@@ -359,22 +379,6 @@ export default function PaginaProfessor() {
                     {calcularTotal(
                       registro.entrada,
                       registro.saida
-                    )}
-                  </div>
-
-                  <div className="localizacao">
-                    {registro.entrada && (
-                      <span>
-                        <b className="entradaTexto">ENTRADA</b>{" "}
-                        Localização não autorizada
-                      </span>
-                    )}
-
-                    {registro.saida && (
-                      <span>
-                        <b className="saidaTexto">SAÍDA</b>{" "}
-                        Localização não autorizada
-                      </span>
                     )}
                   </div>
 
