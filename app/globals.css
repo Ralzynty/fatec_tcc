@@ -1166,3 +1166,522 @@ footer {
   color: #d99a00;
   font-size: 12px;
 }
+
+.folhaPagina {
+  min-height: 100vh;
+  background: #f7f7f7;
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.folhaHeader {
+  height: 60px;
+  background: #fff;
+  border-top: 4px solid #d60000;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  padding: 0 29px;
+  gap: 34px;
+}
+
+.folhaLogoArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 110px;
+}
+
+.folhaLogo {
+  width: 30px;
+  height: 30px;
+  background: #d60000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.folhaLogoArea strong {
+  font-size: 14px;
+}
+
+.folhaNav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 2px;
+  flex: 1;
+}
+
+.folhaNav a {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: #858585;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.folhaNav a.ativo {
+  color: #d60000;
+  border-bottom: 2px solid #d60000;
+}
+
+.folhaUsuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 1px solid #eee;
+  padding-left: 16px;
+}
+
+.folhaAvatar {
+  width: 32px;
+  height: 32px;
+  background: #d60000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.folhaUsuario div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  min-width: 70px;
+}
+
+.folhaUsuario strong {
+  font-size: 12px;
+}
+
+.folhaUsuario span {
+  color: #999;
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.folhaUsuario button {
+  height: 30px;
+  padding: 0 14px;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #888;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.folhaBreadcrumb {
+  height: 33px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 30px;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.folhaBreadcrumb strong {
+  color: #d60000;
+}
+
+.folhaConteudo {
+  padding: 27px 30px 60px;
+}
+
+.folhaTituloArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.folhaTituloArea h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+
+.folhaTituloArea p {
+  margin: 5px 0 0;
+  color: #999;
+  font-size: 13px;
+}
+
+.folhaAcoes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.folhaAcoes select {
+  height: 38px;
+  min-width: 150px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 13px;
+}
+
+.folhaAcoes button {
+  height: 38px;
+  padding: 0 21px;
+  border: none;
+  background: #d60000;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.folhaPontoDia {
+  background: #fff;
+  border: 1px solid #ddd;
+  min-height: 108px;
+  padding: 24px 26px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 30px;
+  position: relative;
+}
+
+.folhaPontoInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.folhaPontoLabel {
+  color: #d60000;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.folhaPontoInfo h2 {
+  margin: 7px 0 6px;
+  font-size: 18px;
+}
+
+.folhaPontoInfo p {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+}
+
+.folhaPontoInfo p strong {
+  color: #555;
+}
+
+.folhaPontoBotoes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.folhaPontoBotoes button {
+  min-width: 195px;
+  height: 41px;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.folhaBotaoEntrada {
+  background: #00a56f;
+  color: #fff;
+}
+
+.folhaBotaoSaida {
+  background: #d60000;
+  color: #fff;
+}
+
+.folhaBotaoRegistrado {
+  background: #e3e3e3;
+  color: #aaa;
+}
+
+.folhaPontoBotoes button:disabled {
+  cursor: default;
+}
+
+.folhaPontoMensagem {
+  grid-column: 1 / -1;
+  position: static;
+  min-height: 55px;
+  background: #eafbf4;
+  border-left: 3px solid #00bd7a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  margin-top: 18px;
+  color: #007c55;
+  font-size: 12px;
+}
+
+.folhaPontoMensagem > strong {
+  font-size: 18px;
+}
+
+.folhaPontoMensagem div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.folhaPontoMensagem span {
+  color: #009b6d;
+}
+
+.servidorResumo {
+  margin-top: 24px;
+  background: #fff;
+  border: 1px solid #ddd;
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 1.1fr .6fr 1.2fr .8fr 1fr;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.servidorResumo div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.servidorResumo span {
+  color: #aaa;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+}
+
+.servidorResumo strong {
+  font-size: 13px;
+}
+
+.tabelaPonto {
+  margin-top: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.tabelaCabecalho,
+.tabelaLinha {
+  display: grid;
+  grid-template-columns: 1.1fr .8fr .8fr .9fr 1.7fr .8fr;
+  align-items: center;
+}
+
+.tabelaCabecalho {
+  min-height: 40px;
+  border-bottom: 1px solid #ddd;
+  color: #999;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0 18px;
+}
+
+.tabelaLinha {
+  min-height: 60px;
+  border-bottom: 1px solid #eee;
+  padding: 0 18px;
+  font-size: 13px;
+  color: #777;
+}
+
+.tabelaLinha:last-child {
+  border-bottom: none;
+}
+
+.tabelaLinha.linhaHoje {
+  background: #fffdf2;
+  border-left: 2px solid #f0b900;
+}
+
+.tabelaLinha.linhaAusencia {
+  background: #fffafa;
+}
+
+.celulaData {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.celulaData strong {
+  color: #111;
+}
+
+.celulaData span {
+  color: #aaa;
+  font-size: 11px;
+}
+
+.celulaData small {
+  margin-left: 5px;
+  background: #fff0bf;
+  color: #e39a00;
+  padding: 3px 6px;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.totalPonto {
+  color: #111;
+  font-weight: 800;
+}
+
+.localizacao {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 10px;
+  color: #888;
+}
+
+.entradaTexto {
+  color: #00a56f;
+  font-size: 9px;
+  margin-right: 3px;
+}
+
+.saidaTexto {
+  color: #d60000;
+  font-size: 9px;
+  margin-right: 3px;
+}
+
+.statusPonto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid;
+  font-size: 9px;
+  font-weight: 800;
+  width: fit-content;
+}
+
+.statusPonto i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: block;
+}
+
+.statusRegular {
+  color: #009b6d;
+  border-color: #a7ead1;
+}
+
+.statusRegular i {
+  background: #00bd7a;
+}
+
+.statusHoje {
+  color: #999;
+  border-color: #ddd;
+  background: #f5f5f5;
+}
+
+.statusHoje i {
+  background: #aaa;
+}
+
+.statusAusência {
+  color: #d60000;
+  border-color: #ffcaca;
+}
+
+.statusAusência i {
+  background: #d60000;
+}
+
+.tabelaVazia {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.folhaCarregando {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+}
+
+@media (max-width: 1100px) {
+  .folhaHeader {
+    padding: 0 15px;
+    gap: 15px;
+  }
+
+  .folhaNav a {
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  .folhaUsuario {
+    display: none;
+  }
+
+  .folhaConteudo {
+    padding: 20px 15px;
+  }
+
+  .servidorResumo {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .tabelaPonto {
+    overflow-x: auto;
+  }
+
+  .tabelaCabecalho,
+  .tabelaLinha {
+    min-width: 950px;
+  }
+}
+
+@media (max-width: 700px) {
+  .folhaNav {
+    display: none;
+  }
+
+  .folhaPontoDia {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  .folhaPontoBotoes {
+    width: 100%;
+  }
+
+  .folhaPontoBotoes button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .servidorResumo {
+    grid-template-columns: 1fr 1fr;
+  }
+}
