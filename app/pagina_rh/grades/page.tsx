@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Servidor = {
   id: number;
@@ -20,47 +21,89 @@ type Grade = {
   status: string;
 };
 
-const diasSemana = [
-  "Segunda",
-  "Terça",
-  "Quarta",
-  "Quinta",
-  "Sexta",
-  "Sábado",
+type Formulario = {
+  servidor_id: string;
+  disciplina: string;
+  turma: string;
+  sala: string;
+  dia_semana: string;
+  hora_inicio: string;
+  hora_fim: string;
+};
+
+const dias = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+const horarios = [
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+  "22:00",
+  "23:00",
 ];
 
-export default function GradesPage() {
+const formularioInicial: Formulario = {
+  servidor_id: "",
+  disciplina: "",
+  turma: "",
+  sala: "",
+  dia_semana: "Segunda",
+  hora_inicio: "07:00",
+  hora_fim: "08:00",
+};
+
+export default function Grades() {
+  const router = useRouter();
+
   const [grades, setGrades] = useState<Grade[]>([]);
   const [servidores, setServidores] = useState<Servidor[]>([]);
-  const [carregando, setCarregando] = useState(true);
-  const [modalAberto, setModalAberto] = useState(false);
-  const [modalExcluir, setModalExcluir] = useState(false);
+  const [professorFiltro, setProfessorFiltro] = useState("todos");
+  const [modal, setModal] = useState<"nova" | "editar" | "excluir" | null>(null);
+  const [formulario, setFormulario] = useState<Formulario>(formularioInicial);
   const [gradeSelecionada, setGradeSelecionada] = useState<Grade | null>(null);
+  const [carregando, setCarregando] = useState(true);
+  const [salvando, setSalvando] = useState(false);
   const [mensagem, setMensagem] = useState("");
 
-  const [formulario, setFormulario] = useState({
-    servidor_id: "",
-    disciplina: "",
-    turma: "",
-    sala: "",
-    dia_semana: "Segunda",
-    hora_inicio: "",
-    hora_fim: "",
-    status: "Ativo",
-  });
+  useEffect(() => {
+    const cargo = localStorage.getItem("cargoUsuario");
+
+    if (cargo !== "RH") {
+      router.replace("/");
+      return;
+    }
+
+    carregarDados();
+  }, [router]);
 
   async function carregarDados() {
     try {
-      const [gradesResposta, servidoresResposta] = await Promise.all([
+      setCarregando(true);
+
+      const [respostaGrades, respostaServidores] = await Promise.all([
         fetch("/api/grades"),
         fetch("/api/servidores"),
       ]);
 
-      const gradesDados = await gradesResposta.json();
-      const servidoresDados = await servidoresResposta.json();
+      const dadosGrades = await respostaGrades.json();
+      const dadosServidores = await respostaServidores.json();
 
-      setGrades(gradesDados);
-      setServidores(servidoresDados);
+      if (respostaGrades.ok) {
+        setGrades(dadosGrades);
+      }
+
+      if (respostaServidores.ok) {
+        setServidores(dadosServidores);
+      }
     } catch {
       setMensagem("Erro ao carregar os dados.");
     } finally {
@@ -68,28 +111,14 @@ export default function GradesPage() {
     }
   }
 
-  useEffect(() => {
-    carregarDados();
-  }, []);
-
-  function abrirCadastro() {
+  function abrirNovaAula() {
     setGradeSelecionada(null);
-
-    setFormulario({
-      servidor_id: "",
-      disciplina: "",
-      turma: "",
-      sala: "",
-      dia_semana: "Segunda",
-      hora_inicio: "",
-      hora_fim: "",
-      status: "Ativo",
-    });
-
-    setModalAberto(true);
+    setFormulario(formularioInicial);
+    setMensagem("");
+    setModal("nova");
   }
 
-  function abrirEdicao(grade: Grade) {
+  function abrirEditar(grade: Grade) {
     setGradeSelecionada(grade);
 
     setFormulario({
@@ -100,15 +129,35 @@ export default function GradesPage() {
       dia_semana: grade.dia_semana,
       hora_inicio: grade.hora_inicio,
       hora_fim: grade.hora_fim,
-      status: grade.status,
     });
 
-    setModalAberto(true);
+    setMensagem("");
+    setModal("editar");
+  }
+
+  function abrirExcluir(grade: Grade) {
+    setGradeSelecionada(grade);
+    setMensagem("");
+    setModal("excluir");
+  }
+
+  function fecharModal() {
+    if (salvando) return;
+
+    setModal(null);
+    setGradeSelecionada(null);
+    setFormulario(formularioInicial);
+    setMensagem("");
+  }
+
+  function alterarCampo(campo: keyof Formulario, valor: string) {
+    setFormulario((atual) => ({
+      ...atual,
+      [campo]: valor,
+    }));
   }
 
   async function salvarGrade() {
-    setMensagem("");
-
     if (
       !formulario.servidor_id ||
       !formulario.disciplina ||
@@ -122,33 +171,48 @@ export default function GradesPage() {
       return;
     }
 
+    if (formulario.hora_inicio >= formulario.hora_fim) {
+      setMensagem("O início deve ser anterior ao término.");
+      return;
+    }
+
     try {
+      setSalvando(true);
+      setMensagem("");
+
       const resposta = await fetch("/api/grades", {
-        method: gradeSelecionada ? "PUT" : "POST",
+        method: modal === "editar" ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          gradeSelecionada
-            ? {
-                id: gradeSelecionada.id,
-                ...formulario,
-              }
-            : formulario
-        ),
+        body: JSON.stringify({
+          ...(modal === "editar" && {
+            id: gradeSelecionada?.id,
+          }),
+          servidor_id: Number(formulario.servidor_id),
+          disciplina: formulario.disciplina,
+          turma: formulario.turma,
+          sala: formulario.sala,
+          dia_semana: formulario.dia_semana,
+          hora_inicio: formulario.hora_inicio,
+          hora_fim: formulario.hora_fim,
+          status: "Ativo",
+        }),
       });
 
-      const dados = await resposta.json();
+      const resultado = await resposta.json();
 
       if (!resposta.ok) {
-        setMensagem(dados.erro || "Erro ao salvar grade.");
+        setMensagem(resultado.erro || "Não foi possível salvar.");
         return;
       }
 
-      setModalAberto(false);
+      fecharModal();
       await carregarDados();
     } catch {
-      setMensagem("Erro ao salvar grade.");
+      setMensagem("Erro ao salvar a aula.");
+    } finally {
+      setSalvando(false);
     }
   }
 
@@ -156,6 +220,9 @@ export default function GradesPage() {
     if (!gradeSelecionada) return;
 
     try {
+      setSalvando(true);
+      setMensagem("");
+
       const resposta = await fetch(
         `/api/grades?id=${gradeSelecionada.id}`,
         {
@@ -163,260 +230,363 @@ export default function GradesPage() {
         }
       );
 
-      const dados = await resposta.json();
+      const resultado = await resposta.json();
 
       if (!resposta.ok) {
-        setMensagem(dados.erro || "Erro ao excluir grade.");
+        setMensagem(resultado.erro || "Não foi possível excluir.");
         return;
       }
 
-      setModalExcluir(false);
-      setGradeSelecionada(null);
+      fecharModal();
       await carregarDados();
     } catch {
-      setMensagem("Erro ao excluir grade.");
+      setMensagem("Erro ao excluir a aula.");
+    } finally {
+      setSalvando(false);
     }
   }
 
-  if (carregando) {
-    return <div className="rhCarregando">Carregando...</div>;
+  function sair() {
+    localStorage.removeItem("cargoUsuario");
+    router.replace("/");
+  }
+
+  const gradesFiltradas = useMemo(() => {
+    if (professorFiltro === "todos") {
+      return grades;
+    }
+
+    return grades.filter(
+      (grade) => String(grade.servidor_id) === professorFiltro
+    );
+  }, [grades, professorFiltro]);
+
+  const professoresComGrade = new Set(
+    grades.map((grade) => grade.servidor_id)
+  ).size;
+
+  function obterPosicao(hora: string) {
+    const [horas, minutos] = hora.split(":").map(Number);
+    const minutosTotais = horas * 60 + minutos;
+    const inicio = 8 * 60;
+
+    return ((minutosTotais - inicio) / 60) * 67;
+  }
+
+  function obterAltura(inicio: string, fim: string) {
+    const [horaInicio, minutoInicio] = inicio.split(":").map(Number);
+    const [horaFim, minutoFim] = fim.split(":").map(Number);
+
+    const inicioMinutos = horaInicio * 60 + minutoInicio;
+    const fimMinutos = horaFim * 60 + minutoFim;
+
+    return ((fimMinutos - inicioMinutos) / 60) * 67;
+  }
+
+  function classeCor(grade: Grade) {
+    const cores = [
+      "gradeAzul",
+      "gradeVerde",
+      "gradeAmarela",
+      "gradeRoxa",
+      "gradeRosa",
+    ];
+
+    return cores[grade.servidor_id % cores.length];
+  }
+
+  function formatarHorario(horario: string) {
+    return horario.slice(0, 5);
   }
 
   return (
-    <main className="rhPagina">
-      <header className="rhHeader">
-        <div className="rhLogoArea">
+    <div className="rhPagina">
+      <header className="rhCabecalho">
+        <div className="rhMarca">
           <div className="rhLogo">BP</div>
           <strong>BatePonto</strong>
+          <span>•</span>
+          <b>RECURSOS HUMANOS</b>
         </div>
 
-        <div className="rhTituloHeader">RECURSOS HUMANOS</div>
-
         <div className="rhUsuario">
-          <div className="rhAvatar">RH</div>
-
-          <div>
-            <strong>Recursos Humanos</strong>
-            <span>Administrador</span>
-          </div>
-
-          <button>SAIR</button>
+          <strong>Recursos Humanos</strong>
+          <small>Gestão de Pessoas</small>
+          <button onClick={sair}>SAIR</button>
         </div>
       </header>
 
       <nav className="rhNav">
         <a href="/pagina_rh">Painel</a>
-
         <a href="/pagina_rh/funcionarios">Funcionários</a>
-
         <a className="ativo" href="/pagina_rh/grades">
           Grades
         </a>
-
         <a href="/pagina_rh/regras_ponto">Regras de Ponto</a>
-
         <span>Fechamento Mensal</span>
         <span>Relatórios</span>
         <span>Gerar PDF</span>
       </nav>
 
-      <section className="rhConteudo">
-        <div className="rhTituloPagina">
-          <div>
-            <h1>Grade de Aulas</h1>
-            <p>Gerencie os horários de aulas dos servidores.</p>
-          </div>
-
-          <button className="rhBotaoPrimario" onClick={abrirCadastro}>
-            + NOVA GRADE
-          </button>
+      <div className="rhConteudo">
+        <div className="breadcrumb">
+          RH&nbsp; / &nbsp;Gestão de Pessoas&nbsp; / &nbsp;
+          <b>Grades</b>
         </div>
 
-        {mensagem && (
-          <div className="rhMensagem">
-            {mensagem}
+        <main className="gradesPagina">
+        <div className="gradesTopo">
+          <div>
+            <h1>Grades de Aula</h1>
+            <p>
+              {grades.length} aulas cadastradas • {professoresComGrade} professores
+            </p>
           </div>
+
+          <div className="gradesAcoes">
+            <select
+              value={professorFiltro}
+              onChange={(e) => setProfessorFiltro(e.target.value)}
+            >
+              <option value="todos">Todos os professores</option>
+              {servidores.map((servidor) => (
+                <option key={servidor.id} value={servidor.id}>
+                  {servidor.nome_completo}
+                </option>
+              ))}
+            </select>
+
+            <button onClick={abrirNovaAula}>+ NOVA AULA</button>
+          </div>
+        </div>
+
+        {mensagem && !modal && (
+          <div className="gradesMensagem">{mensagem}</div>
         )}
 
-        <section className="gradeResumo">
-          <div>
-            <span>TOTAL DE GRADES</span>
-            <strong>{grades.length}</strong>
+        <section className="gradeCalendario">
+          <div className="gradeCabecalho">
+            <div className="gradeCelulaHorario">HORÁRIO</div>
+
+            {dias.map((dia) => (
+              <div className="gradeDia" key={dia}>
+                {dia.toUpperCase()}
+              </div>
+            ))}
           </div>
 
-          <div>
-            <span>ATIVAS</span>
-            <strong>
-              {grades.filter((grade) => grade.status === "Ativo").length}
-            </strong>
-          </div>
+          <div className="gradeCorpo">
+            <div className="gradeColunaHorarios">
+              {horarios.map((horario) => (
+                <div className="gradeHorario" key={horario}>
+                  {horario}
+                </div>
+              ))}
+            </div>
 
-          <div>
-            <span>SERVIDORES</span>
-            <strong>{new Set(grades.map((grade) => grade.servidor_id)).size}</strong>
+            {dias.map((dia) => {
+              const aulasDoDia = gradesFiltradas.filter(
+                (grade) =>
+                  grade.dia_semana === dia && grade.status === "Ativo"
+              );
+
+              return (
+                <div className="gradeColunaDia" key={dia}>
+                  {horarios.map((horario) => (
+                    <div className="gradeLinha" key={horario} />
+                  ))}
+
+                  {aulasDoDia.map((grade) => (
+                    <div
+                      className={`gradeAula ${classeCor(grade)}`}
+                      key={grade.id}
+                      style={{
+                        top: `${obterPosicao(grade.hora_inicio)}px`,
+                        height: `${obterAltura(
+                          grade.hora_inicio,
+                          grade.hora_fim
+                        )}px`,
+                      }}
+                    >
+                      <strong>{grade.disciplina}</strong>
+                      <span>
+                        {grade.turma} · {grade.sala}
+                      </span>
+                      <span>{grade.nome_completo}</span>
+
+                      <div className="gradeLinks">
+                        <button onClick={() => abrirEditar(grade)}>
+                          Editar
+                        </button>
+                        <span>·</span>
+                        <button onClick={() => abrirExcluir(grade)}>
+                          Excluir
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </section>
 
-        <section className="gradeTabela">
-          <div className="gradeCabecalho">
-            <span>PROFESSOR</span>
-            <span>DISCIPLINA</span>
-            <span>TURMA</span>
-            <span>SALA</span>
-            <span>DIA</span>
-            <span>HORÁRIO</span>
-            <span>STATUS</span>
-            <span>AÇÕES</span>
+        <section className="listaGrades">
+          <div className="listaGradesTopo">
+            <h2>Lista de aulas</h2>
+            <span>{gradesFiltradas.length} registros</span>
           </div>
 
-          {grades.length === 0 ? (
-            <div className="gradeVazia">
-              Nenhuma grade cadastrada.
+          {carregando ? (
+            <div className="listaGradesVazia">Carregando...</div>
+          ) : gradesFiltradas.length === 0 ? (
+            <div className="listaGradesVazia">
+              Nenhuma aula cadastrada.
             </div>
           ) : (
-            grades.map((grade) => (
-              <div className="gradeLinha" key={grade.id}>
-                <div>
-                  <strong>{grade.nome_completo}</strong>
-                </div>
-
-                <div>{grade.disciplina}</div>
-
-                <div>{grade.turma}</div>
-
-                <div>{grade.sala}</div>
-
-                <div>{grade.dia_semana}</div>
-
-                <div>
-                  {grade.hora_inicio} — {grade.hora_fim}
-                </div>
-
-                <div>
-                  <span
-                    className={
-                      grade.status === "Ativo"
-                        ? "gradeStatusAtivo"
-                        : "gradeStatusInativo"
-                    }
-                  >
-                    {grade.status}
-                  </span>
-                </div>
-
-                <div className="gradeAcoes">
-                  <button onClick={() => abrirEdicao(grade)}>
-                    ALTERAR
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setGradeSelecionada(grade);
-                      setModalExcluir(true);
-                    }}
-                  >
-                    EXCLUIR
-                  </button>
-                </div>
+            <div className="listaGradesTabela">
+              <div className="listaGradesCabecalho">
+                <span>PROFESSOR</span>
+                <span>DISCIPLINA</span>
+                <span>TURMA</span>
+                <span>SALA</span>
+                <span>DIA</span>
+                <span>HORÁRIO</span>
+                <span></span>
               </div>
-            ))
+
+              {gradesFiltradas.map((grade) => (
+                <div className="listaGradesLinha" key={grade.id}>
+                  <strong>{grade.nome_completo}</strong>
+                  <span>{grade.disciplina}</span>
+                  <span>{grade.turma}</span>
+                  <span>{grade.sala}</span>
+                  <span>{grade.dia_semana}</span>
+                  <span>
+                    {formatarHorario(grade.hora_inicio)} -{" "}
+                    {formatarHorario(grade.hora_fim)}
+                  </span>
+
+                  <div>
+                    <button onClick={() => abrirEditar(grade)}>
+                      EDITAR
+                    </button>
+                    <button onClick={() => abrirExcluir(grade)}>
+                      EXCLUIR
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </section>
-      </section>
+        </main>
+      </div>
 
-      {modalAberto && (
-        <div className="rhModalFundo">
-          <div className="rhModal">
-            <div className="rhModalCabecalho">
-              <div>
-                <h2>
-                  {gradeSelecionada ? "Alterar Grade" : "Nova Grade"}
-                </h2>
+      {modal && (
+        <div className="gradeOverlay" onMouseDown={fecharModal}>
+          {modal === "excluir" && gradeSelecionada ? (
+            <div
+              className="gradeModal gradeModalExcluir"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <span className="gradeModalEtiqueta">CONFIRMAÇÃO</span>
+              <h2>Excluir aula?</h2>
 
-                <p>
-                  Informe os dados do horário de aula.
-                </p>
-              </div>
+              <p>
+                <strong>{gradeSelecionada.disciplina}</strong> —{" "}
+                {gradeSelecionada.dia_semana} às{" "}
+                {formatarHorario(gradeSelecionada.hora_inicio)} -{" "}
+                {formatarHorario(gradeSelecionada.hora_fim)} ·{" "}
+                {gradeSelecionada.nome_completo}
+              </p>
 
-              <button onClick={() => setModalAberto(false)}>
-                ×
-              </button>
-            </div>
+              {mensagem && <div className="gradeModalErro">{mensagem}</div>}
 
-            <div className="rhModalCorpo">
-              <label>
-                Professor
-                <select
-                  value={formulario.servidor_id}
-                  onChange={(e) =>
-                    setFormulario({
-                      ...formulario,
-                      servidor_id: e.target.value,
-                    })
-                  }
+              <div className="gradeModalBotoes">
+                <button
+                  className="botaoExcluir"
+                  onClick={excluirGrade}
+                  disabled={salvando}
                 >
-                  <option value="">Selecione um professor</option>
+                  {salvando ? "EXCLUINDO..." : "EXCLUIR"}
+                </button>
 
-                  {servidores.map((servidor) => (
-                    <option key={servidor.id} value={servidor.id}>
-                      {servidor.nome_completo}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <button
+                  className="botaoCancelar"
+                  onClick={fecharModal}
+                  disabled={salvando}
+                >
+                  CANCELAR
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div
+              className="gradeModal"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <span className="gradeModalEtiqueta">
+                {modal === "editar" ? "EDITAR AULA" : "NOVA AULA"}
+              </span>
+
+              <h2>
+                {modal === "editar" ? "Atualizar aula" : "Adicionar à grade"}
+              </h2>
 
               <div className="gradeFormGrid">
                 <label>
-                  Disciplina
+                  PROFESSOR
+                  <select
+                    value={formulario.servidor_id}
+                    onChange={(e) =>
+                      alterarCampo("servidor_id", e.target.value)
+                    }
+                  >
+                    <option value="">Selecione</option>
+                    {servidores.map((servidor) => (
+                      <option key={servidor.id} value={servidor.id}>
+                        {servidor.nome_completo}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label>
+                  DISCIPLINA / MATÉRIA
                   <input
                     value={formulario.disciplina}
                     onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        disciplina: e.target.value,
-                      })
+                      alterarCampo("disciplina", e.target.value)
                     }
                   />
                 </label>
 
                 <label>
-                  Turma
+                  TURMA
                   <input
                     value={formulario.turma}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        turma: e.target.value,
-                      })
-                    }
+                    onChange={(e) => alterarCampo("turma", e.target.value)}
                   />
                 </label>
 
                 <label>
-                  Sala
+                  SALA
                   <input
                     value={formulario.sala}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        sala: e.target.value,
-                      })
-                    }
+                    onChange={(e) => alterarCampo("sala", e.target.value)}
                   />
                 </label>
 
                 <label>
-                  Dia da semana
+                  DIA DA SEMANA
                   <select
                     value={formulario.dia_semana}
                     onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        dia_semana: e.target.value,
-                      })
+                      alterarCampo("dia_semana", e.target.value)
                     }
                   >
-                    {diasSemana.map((dia) => (
+                    {dias.map((dia) => (
                       <option key={dia} value={dia}>
                         {dia}
                       </option>
@@ -425,119 +595,55 @@ export default function GradesPage() {
                 </label>
 
                 <label>
-                  Hora de início
+                  COMEÇO DE AULA
                   <input
                     type="time"
                     value={formulario.hora_inicio}
                     onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        hora_inicio: e.target.value,
-                      })
+                      alterarCampo("hora_inicio", e.target.value)
                     }
                   />
                 </label>
 
                 <label>
-                  Hora de término
+                  TÉRMINO DE AULA
                   <input
                     type="time"
                     value={formulario.hora_fim}
                     onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        hora_fim: e.target.value,
-                      })
+                      alterarCampo("hora_fim", e.target.value)
                     }
                   />
                 </label>
               </div>
 
-              <label>
-                Status
-                <select
-                  value={formulario.status}
-                  onChange={(e) =>
-                    setFormulario({
-                      ...formulario,
-                      status: e.target.value,
-                    })
-                  }
+              {mensagem && <div className="gradeModalErro">{mensagem}</div>}
+
+              <div className="gradeModalBotoes">
+                <button
+                  className="botaoSalvar"
+                  onClick={salvarGrade}
+                  disabled={salvando}
                 >
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
-                </select>
-              </label>
-            </div>
+                  {salvando
+                    ? "SALVANDO..."
+                    : modal === "editar"
+                      ? "SALVAR"
+                      : "ADICIONAR"}
+                </button>
 
-            <div className="rhModalRodape">
-              <button
-                className="rhBotaoSecundario"
-                onClick={() => setModalAberto(false)}
-              >
-                CANCELAR
-              </button>
-
-              <button
-                className="rhBotaoPrimario"
-                onClick={salvarGrade}
-              >
-                {gradeSelecionada ? "SALVAR ALTERAÇÕES" : "CADASTRAR GRADE"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {modalExcluir && gradeSelecionada && (
-        <div className="rhModalFundo">
-          <div className="rhModal rhModalExcluir">
-            <div className="rhModalCabecalho">
-              <div>
-                <h2>Excluir grade?</h2>
-
-                <p>
-                  Essa ação não poderá ser desfeita.
-                </p>
+                <button
+                  className="botaoCancelar"
+                  onClick={fecharModal}
+                  disabled={salvando}
+                >
+                  CANCELAR
+                </button>
               </div>
-
-              <button onClick={() => setModalExcluir(false)}>
-                ×
-              </button>
             </div>
-
-            <div className="rhModalCorpo">
-              <p>
-                Você está excluindo a grade de{" "}
-                <strong>{gradeSelecionada.nome_completo}</strong>.
-              </p>
-
-              <p>
-                {gradeSelecionada.disciplina} ·{" "}
-                {gradeSelecionada.dia_semana} ·{" "}
-                {gradeSelecionada.hora_inicio} —{" "}
-                {gradeSelecionada.hora_fim}
-              </p>
-            </div>
-
-            <div className="rhModalRodape">
-              <button
-                className="rhBotaoSecundario"
-                onClick={() => setModalExcluir(false)}
-              >
-                CANCELAR
-              </button>
-
-              <button
-                className="rhBotaoExcluir"
-                onClick={excluirGrade}
-              >
-                EXCLUIR GRADE
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       )}
-    </main>
+    </div>
   );
 }

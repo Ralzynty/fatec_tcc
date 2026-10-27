@@ -470,6 +470,21 @@ footer {
   margin-left: 10px
 }
 
+.rhUsuario button {
+  border: 1px solid #ddd;
+  padding: 8px 13px;
+  color: #777;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.rhUsuario button:hover {
+  color: #d90000;
+  border-color: #d90000;
+}
+
 .rhNav {
   height: 48px;
   background: #fff;
@@ -2044,4 +2059,415 @@ footer {
   .historicoDetalhes {
     min-width: 760px;
   }
+}
+
+.gradesPagina {
+  padding: 25px 0 50px;
+  background: #f7f7f7;
+  min-height: calc(100vh - 94px);
+}
+
+.gradesTopo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.gradesTopo h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.gradesTopo p {
+  margin: 4px 0 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.gradesAcoes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.gradesAcoes select {
+  width: 185px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 13px;
+}
+
+.gradesAcoes button {
+  height: 40px;
+  padding: 0 22px;
+  border: 0;
+  background: #d90000;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gradeCalendario {
+  background: #fff;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.gradeCabecalho {
+  display: grid;
+  grid-template-columns: 90px repeat(5, 1fr);
+  height: 42px;
+  border-bottom: 1px solid #ddd;
+}
+
+.gradeCelulaHorario,
+.gradeDia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-right: 1px solid #ddd;
+}
+
+.gradeDia:last-child {
+  border-right: 0;
+}
+
+.gradeCorpo {
+  display: grid;
+  grid-template-columns: 90px repeat(5, 1fr);
+  height: 1072px;
+}
+
+.gradeColunaHorarios {
+  border-right: 1px solid #ddd;
+}
+
+.gradeHorario {
+  height: 67px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+  color: #999;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.gradeColunaDia {
+  position: relative;
+  border-right: 1px solid #eee;
+}
+
+.gradeColunaDia:last-child {
+  border-right: 0;
+}
+
+.gradeLinha {
+  height: 67px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+}
+
+.gradeAula {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  min-height: 55px;
+  box-sizing: border-box;
+  padding: 9px;
+  border-radius: 4px;
+  border: 1px solid;
+  overflow: hidden;
+  font-size: 11px;
+}
+
+.gradeAula strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.gradeAula span {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.gradeLinks {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.gradeLinks button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.gradeAzul {
+  background: #dceaff;
+  border-color: #72adff;
+  color: #1455b8;
+}
+
+.gradeVerde {
+  background: #d7f5e8;
+  border-color: #49d6a1;
+  color: #14755a;
+}
+
+.gradeAmarela {
+  background: #fff1c9;
+  border-color: #f4c22d;
+  color: #a76b00;
+}
+
+.gradeRoxa {
+  background: #f0ddff;
+  border-color: #c98cff;
+  color: #7d22c5;
+}
+
+.gradeRosa {
+  background: #ffe0e5;
+  border-color: #ff8c9c;
+  color: #c51d3a;
+}
+
+.listaGrades {
+  margin-top: 25px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.listaGradesTopo {
+  height: 45px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+
+.listaGradesTopo h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.listaGradesTopo span {
+  color: #aaa;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.listaGradesCabecalho,
+.listaGradesLinha {
+  display: grid;
+  grid-template-columns: 1.3fr 1.2fr 1fr .8fr .8fr 1fr 1.2fr;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.listaGradesCabecalho {
+  min-height: 40px;
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.listaGradesLinha {
+  min-height: 52px;
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+.listaGradesLinha:last-child {
+  border-bottom: 0;
+}
+
+.listaGradesLinha strong {
+  font-size: 13px;
+}
+
+.listaGradesLinha > div {
+  display: flex;
+  gap: 8px;
+}
+
+.listaGradesLinha button {
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #999;
+  padding: 6px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.listaGradesLinha button:hover {
+  border-color: #d90000;
+  color: #d90000;
+}
+
+.listaGradesVazia {
+  padding: 30px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.gradesMensagem {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  background: #fff0f0;
+  border: 1px solid #ffb5b5;
+  color: #c40000;
+  font-size: 13px;
+}
+
+.gradeOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.gradeModal {
+  width: 485px;
+  background: #fff;
+  padding: 28px 25px 24px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .15);
+}
+
+.gradeModalExcluir {
+  width: 365px;
+  border: 1px solid #d90000;
+}
+
+.gradeModalEtiqueta {
+  display: block;
+  color: #d90000;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.gradeModal h2 {
+  margin: 0 0 22px;
+  font-size: 21px;
+}
+
+.gradeModalExcluir h2 {
+  margin-bottom: 10px;
+}
+
+.gradeModalExcluir p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.gradeFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+}
+
+.gradeFormGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #999;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.gradeFormGrid input,
+.gradeFormGrid select {
+  width: 100%;
+  height: 34px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 0 11px;
+  color: #222;
+  font-size: 13px;
+  outline: none;
+}
+
+.gradeFormGrid input:focus,
+.gradeFormGrid select:focus {
+  border-color: #aaa;
+}
+
+.gradeModalErro {
+  margin-top: 15px;
+  color: #d90000;
+  font-size: 12px;
+}
+
+.gradeModalBotoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.gradeModalBotoes button {
+  height: 38px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.botaoSalvar,
+.botaoExcluir {
+  border: 0;
+  background: #d90000;
+  color: #fff;
+}
+
+.botaoCancelar {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #888;
+}
+
+.botaoSalvar:hover,
+.botaoExcluir:hover {
+  background: #b90000;
+}
+
+.botaoCancelar:hover {
+  border-color: #bbb;
+  color: #555;
+}
+
+.gradeModalBotoes button:disabled {
+  opacity: .6;
+  cursor: default;
 }

@@ -322,19 +322,15 @@ function fecharTodos() {
           <a href="/pagina_professor">
             Folha de Ponto
           </a>
-
           <a className="ativo" href="/pagina_professor/historico">
             Histórico
           </a>
-
           <a href="#">
             Justificativas
           </a>
-
           <a href="#">
             Notificações
           </a>
-
           <a href="#">
             Gerar PDF
           </a>

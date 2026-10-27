@@ -92,9 +92,9 @@ export default function RegrasDePonto() {
         atuais.map((regra) =>
           regra.id === id
             ? {
-                ...regra,
-                valor: valorEditado,
-              }
+              ...regra,
+              valor: valorEditado,
+            }
             : regra
         )
       );
@@ -147,19 +147,18 @@ export default function RegrasDePonto() {
       </header>
 
       <nav className="rhNav">
-        <Link href="/pagina_rh">Painel</Link>
-
+        <Link href="/pagina_rh">
+          Painel
+        </Link>
         <Link href="/pagina_rh/funcionarios">
           Funcionários
         </Link>
-
-        <Link
-          className="ativo"
-          href="/pagina_rh/regras_ponto"
-        >
+        <Link href="/pagina_rh/grades">
+          Grades
+        </Link>
+        <Link className="ativo" href="/pagina_rh/regras_ponto">
           Regras de Ponto
         </Link>
-
         <span>Fechamento Mensal</span>
         <span>Relatórios</span>
         <span>Gerar PDF</span>
